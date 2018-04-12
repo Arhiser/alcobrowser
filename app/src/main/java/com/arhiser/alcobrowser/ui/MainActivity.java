@@ -15,17 +15,16 @@ import com.arhiser.alcobrowser.model.Store;
 import com.arhiser.alcobrowser.network.Request;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 
 public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks, IMainView {
+    private static int PAGE = 1;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private MainAdapter mMainAdapter;
-    private HashMap<String, String> map;
 
     Disposable storesRequest = Disposables.empty();
 
@@ -49,25 +48,37 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         mRecyclerView.setHasFixedSize(true);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
+
         mMainAdapter = new MainAdapter(MainActivity.this);
         mMainAdapter.setOnItemClickListener(MainActivity.this);
         mRecyclerView.setAdapter(mMainAdapter);
 
-        map = new HashMap<>();
-        map.put("where", "has_parking");
-
-
-        storesRequest = Request.getStores(1, 20).subscribe(
+        storesRequest = Request.getStores(PAGE, 20).subscribe(
                 storeRequestResult -> {
                     // do something with data
                     List<Store> storeList = new ArrayList<>();
                     storeList = storeRequestResult.getResult();
                     mMainAdapter.addAll(storeList);
 
+
                 }, error -> {
                     //handle errors
                 });
 
+        //Here is he
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            int pastVisibleItems, visibleItemCount, totalItemCount;
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                visibleItemCount = mLinearLayoutManager.getChildCount();
+                totalItemCount = mLinearLayoutManager.getItemCount();
+                pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+
+                if ((totalItemCount - visibleItemCount) <= (pastVisibleItems + 2)) {
+                    PAGE++;
+                }
+            }
+        });
     }
 
     @Override
