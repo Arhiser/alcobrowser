@@ -7,4 +7,8 @@
     <string name="tel">Tel</string>
     <string name="fax">Fax</string>
     <string name="ok">ok</string>
+    <string name="tel1">Tel:\u0020</string>
+    <string name="fax1">Fax:\u0020</string>
+    <string name="city1">City:\u0020</string>
+    <string name="p_code">P.Code:\u0020</string>
 </resources>

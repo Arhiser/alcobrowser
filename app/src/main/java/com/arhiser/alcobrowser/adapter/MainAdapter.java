@@ -3,6 +3,7 @@ package com.arhiser.alcobrowser.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     private List<Store> storeList = new ArrayList<>();
     private IMainView mListiner;
 
-    public void setOnItemClickListener(IMainView mListiner){
+    public void setOnItemClickListener(IMainView mListiner) {
         this.mListiner = mListiner;
     }
 
@@ -49,7 +50,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
         holder.mStoreName.setText(marketName);
         holder.mAddressFirst.setText(addressFirst);
-        holder.mAddressSecond.setText(addressSecond);
+        if (!TextUtils.isEmpty(addressSecond)) {
+            holder.mAddressSecond.setVisibility(View.VISIBLE);
+            holder.mAddressSecond.setText(addressSecond);
+        }
         holder.mCity.setText(city);
         holder.mPostalCode.setText(postalCode);
         holder.mTelNumber.setText(telNumber);
@@ -68,20 +72,20 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         public MainViewHolder(View itemView) {
             super(itemView);
 
-            mStoreName = (TextView)itemView.findViewById(R.id.item_market_name);
-            mAddressFirst = (TextView)itemView.findViewById(R.id.item_address_line_1);
-            mAddressSecond = (TextView)itemView.findViewById(R.id.item_address_line_2);
-            mCity = (TextView)itemView.findViewById(R.id.item_city);
-            mPostalCode = (TextView)itemView.findViewById(R.id.item_postal_code);
-            mTelNumber = (TextView)itemView.findViewById(R.id.item_tel);
-            mFaxNumber = (TextView)itemView.findViewById(R.id.item_fax);
+            mStoreName = (TextView) itemView.findViewById(R.id.item_market_name);
+            mAddressFirst = (TextView) itemView.findViewById(R.id.item_address_line_1);
+            mAddressSecond = (TextView) itemView.findViewById(R.id.item_address_line_2);
+            mCity = (TextView) itemView.findViewById(R.id.item_city);
+            mPostalCode = (TextView) itemView.findViewById(R.id.item_postal_code);
+            mTelNumber = (TextView) itemView.findViewById(R.id.item_tel);
+            mFaxNumber = (TextView) itemView.findViewById(R.id.item_fax);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mListiner != null){
+                    if (mListiner != null) {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION){
+                        if (position != RecyclerView.NO_POSITION) {
                             mListiner.OnItemClick(position, storeList);
                         }
                     }
@@ -90,7 +94,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         }
     }
 
-    public void addAll (List<Store> list){
+    public void addAll(List<Store> list) {
         storeList.clear();
         storeList.addAll(list);
         notifyDataSetChanged();

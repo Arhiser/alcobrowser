@@ -1,10 +1,9 @@
 package com.arhiser.alcobrowser.ui;
 
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
@@ -13,10 +12,7 @@ import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.arhiser.alcobrowser.R;
 import com.arhiser.alcobrowser.adapter.MainAdapter;
 import com.arhiser.alcobrowser.model.Store;
-import com.arhiser.alcobrowser.model.StoreRequestResult;
 import com.arhiser.alcobrowser.network.Request;
-import com.arhiser.alcobrowser.network.service.Api;
-import com.arhiser.alcobrowser.network.service.RetrofitService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,13 +20,12 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-import io.reactivex.functions.Consumer;
-import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks, IMainView {
     private RecyclerView mRecyclerView;
-    private GridLayoutManager mGridLayoutManager;
+    private LinearLayoutManager mLinearLayoutManager;
     private MainAdapter mMainAdapter;
+    private HashMap<String, String> map;
 
     Disposable storesRequest = Disposables.empty();
 
@@ -50,18 +45,24 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
             }
         });
 
-        mRecyclerView = (RecyclerView)findViewById(R.id.main_recyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.main_recyclerView);
         mRecyclerView.setHasFixedSize(true);
-        mGridLayoutManager = new GridLayoutManager(this, 1);
-        mRecyclerView.setLayoutManager(mGridLayoutManager);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mMainAdapter = new MainAdapter(MainActivity.this);
         mMainAdapter.setOnItemClickListener(MainActivity.this);
         mRecyclerView.setAdapter(mMainAdapter);
+
+        map = new HashMap<>();
+        map.put("where", "has_parking");
 
 
         storesRequest = Request.getStores(1, 20).subscribe(
                 storeRequestResult -> {
                     // do something with data
+                    List<Store> storeList = new ArrayList<>();
+                    storeList = storeRequestResult.getResult();
+                    mMainAdapter.addAll(storeList);
 
                 }, error -> {
                     //handle errors
@@ -77,12 +78,12 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
 
     @Override
     public void onResult(Object result) {
-
+        Toast.makeText(MainActivity.this, "Here is your result :P", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void OnItemClick(int position, List<Store> storeList) {
-        Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Clicked :D", Toast.LENGTH_SHORT).show();
 
     }
 }
