@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorAccent"
+        android:background="@drawable/main_background"
         android:visibility="invisible"
         tools:ignore="MissingPrefix"
         tools:visibility="visible">
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorAccent"
+            android:background="@color/colorPrimary"
             android:orientation="horizontal"
             android:weightSum="2">
 
