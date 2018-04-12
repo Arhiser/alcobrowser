@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AlcoBrowser</string>
+    <string name="market">Mahazin</string>
+    <string name="address_line">address line</string>
+    <string name="city">city</string>
+    <string name="postal_code">postal code</string>
+    <string name="tel">Tel</string>
+    <string name="fax">Fax</string>
+    <string name="ok">ok</string>
 </resources>
