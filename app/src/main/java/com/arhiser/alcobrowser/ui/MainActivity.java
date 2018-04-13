@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
                 storeRequestResult -> {
                     mMainAdapter.addAll(storeRequestResult.getResult());
                     isLoadingInProgress = false;
+                    pager = storeRequestResult.getPager();
                 }, error -> {
                     isLoadingInProgress = false;
                     //handle errors

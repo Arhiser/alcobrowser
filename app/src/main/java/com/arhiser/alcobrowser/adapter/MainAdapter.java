@@ -27,6 +27,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
 
     public MainAdapter(Context context) {
         this.context = context;
+        setHasStableIds(true);
     }
 
     @NonNull
@@ -94,8 +95,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
         }
     }
 
+    @Override
+    public long getItemId(int position) {
+        return storeList.get(position).getId();
+    }
+
     public void addAll(List<Store> list) {
         storeList.addAll(list);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(storeList.size() - list.size(), list.size());
     }
 }
