@@ -76,7 +76,7 @@ public class Pager {
             this.isFirstPage = isFirstPage;
         }
 
-        public Boolean getIsFinalPage() {
+        public Boolean isFinalPage() {
             return isFinalPage;
         }
 

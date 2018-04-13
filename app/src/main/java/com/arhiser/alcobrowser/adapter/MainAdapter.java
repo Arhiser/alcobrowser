@@ -95,7 +95,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     }
 
     public void addAll(List<Store> list) {
-        storeList.clear();
         storeList.addAll(list);
         notifyDataSetChanged();
     }
