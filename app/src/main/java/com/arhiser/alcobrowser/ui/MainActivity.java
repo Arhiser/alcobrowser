@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
@@ -24,17 +25,19 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private MainAdapter mMainAdapter;
+    private ProgressBar progressBarMain;
 
-    Disposable storesRequest = Disposables.empty();
+    private Disposable storesRequest = Disposables.empty();
 
-    boolean isLoadingInProgress = false;
-    Pager pager;
+    private boolean isLoadingInProgress = false;
+    private Pager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+        progressBarMain = (ProgressBar)findViewById(R.id.progressBarMain);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         mMainAdapter.setOnItemClickListener(MainActivity.this);
         mRecyclerView.setAdapter(mMainAdapter);
 
-        //Here is he
+
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -81,19 +84,30 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
 
     private void loadMore(int pageNum) {
         isLoadingInProgress = true;
+        showProgressView();
         storesRequest = Request.getStores(pageNum, 20).subscribe(
                 storeRequestResult -> {
                     mMainAdapter.addAll(storeRequestResult.getResult());
                     isLoadingInProgress = false;
+                    hideProgressView();
                     pager = storeRequestResult.getPager();
                 }, error -> {
                     isLoadingInProgress = false;
+                    showProgressView();
                     //handle errors
                 });
     }
 
     private boolean isAllLoaded() {
         return pager != null && pager.isFinalPage();
+    }
+
+    private void showProgressView() {
+        progressBarMain.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressView() {
+        progressBarMain.setVisibility(View.GONE);
     }
 
     @Override
