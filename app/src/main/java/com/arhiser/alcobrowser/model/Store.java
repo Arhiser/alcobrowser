@@ -1,9 +1,12 @@
 package com.arhiser.alcobrowser.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Store {
+public class Store implements Parcelable{
 
     @SerializedName("id")
     @Expose
@@ -457,4 +460,317 @@ public class Store {
         this.storeNo = storeNo;
     }
 
+    public static final Creator<Store> CREATOR = new Creator<Store>() {
+        @Override
+        public Store createFromParcel(Parcel in) {
+            return new Store(in);
+        }
+
+        @Override
+        public Store[] newArray(int size) {
+            return new Store[size];
+        }
+    };
+
+    protected Store(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readInt();
+        }
+        byte tmpIsDead = in.readByte();
+        isDead = tmpIsDead == 0 ? null : tmpIsDead == 1;
+        name = in.readString();
+        tags = in.readString();
+        addressLine1 = in.readString();
+        addressLine2 = in.readString();
+        city = in.readString();
+        postalCode = in.readString();
+        telephone = in.readString();
+        fax = in.readString();
+        if (in.readByte() == 0) {
+            latitude = null;
+        } else {
+            latitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            longitude = null;
+        } else {
+            longitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            productsCount = null;
+        } else {
+            productsCount = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            inventoryCount = null;
+        } else {
+            inventoryCount = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            inventoryPriceInCents = null;
+        } else {
+            inventoryPriceInCents = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            inventoryVolumeInMilliliters = null;
+        } else {
+            inventoryVolumeInMilliliters = in.readInt();
+        }
+        byte tmpHasWheelchairAccessability = in.readByte();
+        hasWheelchairAccessability = tmpHasWheelchairAccessability == 0 ? null : tmpHasWheelchairAccessability == 1;
+        byte tmpHasBilingualServices = in.readByte();
+        hasBilingualServices = tmpHasBilingualServices == 0 ? null : tmpHasBilingualServices == 1;
+        byte tmpHasProductConsultant = in.readByte();
+        hasProductConsultant = tmpHasProductConsultant == 0 ? null : tmpHasProductConsultant == 1;
+        byte tmpHasTastingBar = in.readByte();
+        hasTastingBar = tmpHasTastingBar == 0 ? null : tmpHasTastingBar == 1;
+        byte tmpHasBeerColdRoom = in.readByte();
+        hasBeerColdRoom = tmpHasBeerColdRoom == 0 ? null : tmpHasBeerColdRoom == 1;
+        byte tmpHasSpecialOccasionPermits = in.readByte();
+        hasSpecialOccasionPermits = tmpHasSpecialOccasionPermits == 0 ? null : tmpHasSpecialOccasionPermits == 1;
+        byte tmpHasVintagesCorner = in.readByte();
+        hasVintagesCorner = tmpHasVintagesCorner == 0 ? null : tmpHasVintagesCorner == 1;
+        byte tmpHasParking = in.readByte();
+        hasParking = tmpHasParking == 0 ? null : tmpHasParking == 1;
+        byte tmpHasTransitAccess = in.readByte();
+        hasTransitAccess = tmpHasTransitAccess == 0 ? null : tmpHasTransitAccess == 1;
+        if (in.readByte() == 0) {
+            sundayOpen = null;
+        } else {
+            sundayOpen = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            sundayClose = null;
+        } else {
+            sundayClose = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            mondayOpen = null;
+        } else {
+            mondayOpen = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            mondayClose = null;
+        } else {
+            mondayClose = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            tuesdayOpen = null;
+        } else {
+            tuesdayOpen = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            tuesdayClose = null;
+        } else {
+            tuesdayClose = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            wednesdayOpen = null;
+        } else {
+            wednesdayOpen = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            wednesdayClose = null;
+        } else {
+            wednesdayClose = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            thursdayOpen = null;
+        } else {
+            thursdayOpen = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            thursdayClose = null;
+        } else {
+            thursdayClose = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            fridayOpen = null;
+        } else {
+            fridayOpen = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            fridayClose = null;
+        } else {
+            fridayClose = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            saturdayOpen = null;
+        } else {
+            saturdayOpen = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            saturdayClose = null;
+        } else {
+            saturdayClose = in.readInt();
+        }
+        updatedAt = in.readString();
+        if (in.readByte() == 0) {
+            storeNo = null;
+        } else {
+            storeNo = in.readInt();
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(id);
+        }
+        dest.writeByte((byte) (isDead == null ? 0 : isDead ? 1 : 2));
+        dest.writeString(name);
+        dest.writeString(tags);
+        dest.writeString(addressLine1);
+        dest.writeString(addressLine2);
+        dest.writeString(city);
+        dest.writeString(postalCode);
+        dest.writeString(telephone);
+        dest.writeString(fax);
+        if (latitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(latitude);
+        }
+        if (longitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(longitude);
+        }
+        if (productsCount == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(productsCount);
+        }
+        if (inventoryCount == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(inventoryCount);
+        }
+        if (inventoryPriceInCents == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(inventoryPriceInCents);
+        }
+        if (inventoryVolumeInMilliliters == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(inventoryVolumeInMilliliters);
+        }
+        dest.writeByte((byte) (hasWheelchairAccessability == null ? 0 : hasWheelchairAccessability ? 1 : 2));
+        dest.writeByte((byte) (hasBilingualServices == null ? 0 : hasBilingualServices ? 1 : 2));
+        dest.writeByte((byte) (hasProductConsultant == null ? 0 : hasProductConsultant ? 1 : 2));
+        dest.writeByte((byte) (hasTastingBar == null ? 0 : hasTastingBar ? 1 : 2));
+        dest.writeByte((byte) (hasBeerColdRoom == null ? 0 : hasBeerColdRoom ? 1 : 2));
+        dest.writeByte((byte) (hasSpecialOccasionPermits == null ? 0 : hasSpecialOccasionPermits ? 1 : 2));
+        dest.writeByte((byte) (hasVintagesCorner == null ? 0 : hasVintagesCorner ? 1 : 2));
+        dest.writeByte((byte) (hasParking == null ? 0 : hasParking ? 1 : 2));
+        dest.writeByte((byte) (hasTransitAccess == null ? 0 : hasTransitAccess ? 1 : 2));
+        if (sundayOpen == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(sundayOpen);
+        }
+        if (sundayClose == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(sundayClose);
+        }
+        if (mondayOpen == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(mondayOpen);
+        }
+        if (mondayClose == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(mondayClose);
+        }
+        if (tuesdayOpen == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(tuesdayOpen);
+        }
+        if (tuesdayClose == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(tuesdayClose);
+        }
+        if (wednesdayOpen == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(wednesdayOpen);
+        }
+        if (wednesdayClose == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(wednesdayClose);
+        }
+        if (thursdayOpen == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(thursdayOpen);
+        }
+        if (thursdayClose == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(thursdayClose);
+        }
+        if (fridayOpen == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(fridayOpen);
+        }
+        if (fridayClose == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(fridayClose);
+        }
+        if (saturdayOpen == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(saturdayOpen);
+        }
+        if (saturdayClose == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(saturdayClose);
+        }
+        dest.writeString(updatedAt);
+        if (storeNo == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(storeNo);
+        }
+    }
 }
