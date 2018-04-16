@@ -65,17 +65,17 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
                     //handle errors
                 });
 
-        //Here is he
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            int pastVisibleItems, visibleItemCount, totalItemCount;
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                visibleItemCount = mLinearLayoutManager.getChildCount();
-                totalItemCount = mLinearLayoutManager.getItemCount();
-                pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition();
+                int visibleItemCount = mRecyclerView.getChildCount();
+                int totalItemCount = mMainAdapter.getItemCount();
+                int firstVisibleItemIndex = mLinearLayoutManager.findFirstVisibleItemPosition();
 
-                if ((totalItemCount - visibleItemCount) <= (pastVisibleItems + 2)) {
-                    PAGE++;
+                if (!mMainAdapter.isLoading()) {
+                    if ((totalItemCount - visibleItemCount) <= firstVisibleItemIndex && loadingController.hasSomethingToLoad()) {
+                        loadingController.loadMore();
+                    }
                 }
             }
         });
