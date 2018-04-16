@@ -1,6 +1,5 @@
 package com.arhiser.alcobrowser.adapter;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,19 +20,30 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    private Context context;
     private List<Store> storeList = new ArrayList<>();
+    private boolean isLoading = false;
     private IMainView mListiner;
 
     public void setOnItemClickListener(IMainView mListiner) {
         this.mListiner = mListiner;
     }
 
-    public MainAdapter(Context context) {
-        this.context = context;
+    public MainAdapter() {
         setHasStableIds(true);
     }
 
+    public void setLoading(boolean isLoading) {
+        if (this.isLoading != isLoading) {
+            boolean oldValue = this.isLoading;
+            this.isLoading = isLoading;
+            if (!oldValue && isLoading) {
+                notifyItemInserted(storeList.size());
+            }
+            if (oldValue && !isLoading) {
+                notifyItemRemoved(storeList.size());
+            }
+        }
+    }
 
     @NonNull
     @Override
@@ -81,12 +91,16 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return storeList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        if (isLoading && position == storeList.size()) {
+            return VIEW_TYPE_LOADING;
+        } else {
+            return VIEW_TYPE_ITEM;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return storeList == null ? 0 : storeList.size();
+        return storeList.size() + (isLoading ? 1 : 0);
     }
 
     class StoreViewHolder extends RecyclerView.ViewHolder {
@@ -130,7 +144,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public long getItemId(int position) {
-        return storeList.get(position).getId();
+        if (isLoading && position == storeList.size()) {
+            return -1;
+        } else {
+            return storeList.get(position).getId();
+        }
     }
 
     public void addAll(List<Store> list) {

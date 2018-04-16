@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-        mMainAdapter = new MainAdapter(MainActivity.this);
+        mMainAdapter = new MainAdapter();
         mMainAdapter.setOnItemClickListener(MainActivity.this);
         mRecyclerView.setAdapter(mMainAdapter);
 
@@ -103,11 +103,13 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
     }
 
     private void showProgressView() {
-        progressBarMain.setVisibility(View.VISIBLE);
+        //progressBarMain.setVisibility(View.VISIBLE);
+        mMainAdapter.setLoading(true);
     }
 
     private void hideProgressView() {
-        progressBarMain.setVisibility(View.GONE);
+        mMainAdapter.setLoading(false);
+        //progressBarMain.setVisibility(View.GONE);
     }
 
     @Override

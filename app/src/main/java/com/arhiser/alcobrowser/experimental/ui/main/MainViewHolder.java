@@ -31,7 +31,7 @@ public class MainViewHolder extends ViewHolder<MainViewModel, MainActionControll
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-        mMainAdapter = new MainAdapter(getContext());
+        mMainAdapter = new MainAdapter();
         //mMainAdapter.setOnItemClickListener();
         mRecyclerView.setAdapter(mMainAdapter);
 
