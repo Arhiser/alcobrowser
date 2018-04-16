@@ -1,5 +1,7 @@
 package com.arhiser.alcobrowser.network.service;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -23,7 +25,9 @@ public class RetrofitService {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         final OkHttpClient.Builder httpClient =
-                new OkHttpClient.Builder().addInterceptor(logging);
+                new OkHttpClient.Builder().addInterceptor(logging)
+                        .connectTimeout(10, TimeUnit.SECONDS)
+                        .readTimeout(10, TimeUnit.SECONDS);
 
         return httpClient.build();
     }

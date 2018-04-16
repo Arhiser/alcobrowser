@@ -1,8 +1,8 @@
 package com.arhiser.alcobrowser.ui;
 
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,22 +11,24 @@ import android.widget.Toast;
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.arhiser.alcobrowser.R;
 import com.arhiser.alcobrowser.adapter.MainAdapter;
+import com.arhiser.alcobrowser.model.Pager;
 import com.arhiser.alcobrowser.model.Store;
 import com.arhiser.alcobrowser.network.Request;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 
 public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks, IMainView {
-    private static int PAGE = 1;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private MainAdapter mMainAdapter;
 
     Disposable storesRequest = Disposables.empty();
+
+    boolean isLoadingInProgress = false;
+    Pager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,32 +55,45 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         mMainAdapter.setOnItemClickListener(MainActivity.this);
         mRecyclerView.setAdapter(mMainAdapter);
 
-        storesRequest = Request.getStores(PAGE, 20).subscribe(
-                storeRequestResult -> {
-                    // do something with data
-                    List<Store> storeList = new ArrayList<>();
-                    storeList = storeRequestResult.getResult();
-                    mMainAdapter.addAll(storeList);
-
-
-                }, error -> {
-                    //handle errors
-                });
-
+        //Here is he
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int visibleItemCount = mRecyclerView.getChildCount();
-                int totalItemCount = mMainAdapter.getItemCount();
-                int firstVisibleItemIndex = mLinearLayoutManager.findFirstVisibleItemPosition();
+                int visibleItemCount = mLinearLayoutManager.getChildCount();
+                int totalItemCount = mLinearLayoutManager.getItemCount();
+                int firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
 
-                if (!mMainAdapter.isLoading()) {
-                    if ((totalItemCount - visibleItemCount) <= firstVisibleItemIndex && loadingController.hasSomethingToLoad()) {
-                        loadingController.loadMore();
-                    }
+                if (!isLoadingInProgress
+                        && !isAllLoaded()
+                        && (totalItemCount - visibleItemCount) <= (firstVisibleItem + 2)) {
+                    loadMore(pager != null ? pager.getCurrentPage() + 1 : 1);
                 }
             }
         });
+
+        startLoad();
+    }
+
+    private void startLoad() {
+        pager = null;
+        loadMore(1);
+    }
+
+    private void loadMore(int pageNum) {
+        isLoadingInProgress = true;
+        storesRequest = Request.getStores(pageNum, 20).subscribe(
+                storeRequestResult -> {
+                    mMainAdapter.addAll(storeRequestResult.getResult());
+                    isLoadingInProgress = false;
+                    pager = storeRequestResult.getPager();
+                }, error -> {
+                    isLoadingInProgress = false;
+                    //handle errors
+                });
+    }
+
+    private boolean isAllLoaded() {
+        return pager != null && pager.isFinalPage();
     }
 
     @Override
