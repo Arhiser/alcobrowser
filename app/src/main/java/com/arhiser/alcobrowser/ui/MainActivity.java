@@ -5,13 +5,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+import com.arhiser.alcobrowser.App;
 import com.arhiser.alcobrowser.R;
 import com.arhiser.alcobrowser.adapter.MainAdapter;
+import com.arhiser.alcobrowser.dao.AppDatabase;
+import com.arhiser.alcobrowser.dao.StoresDao;
 import com.arhiser.alcobrowser.model.Pager;
 import com.arhiser.alcobrowser.model.Store;
 import com.arhiser.alcobrowser.network.Request;
@@ -22,10 +26,12 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 
 public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks, IMainView {
+
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private MainAdapter mMainAdapter;
-    private ProgressBar progressBarMain;
+    private AppDatabase database;
+    private StoresDao storesDao;
 
     private Disposable storesRequest = Disposables.empty();
 
@@ -37,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
-        progressBarMain = (ProgressBar)findViewById(R.id.progressBarMain);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
             }
         });
 
+        database = App.getInstance().getDatabase();
+        storesDao = database.storesDao();
+
         mRecyclerView = (RecyclerView) findViewById(R.id.main_recyclerView);
         mRecyclerView.setHasFixedSize(true);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -57,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         mMainAdapter = new MainAdapter();
         mMainAdapter.setOnItemClickListener(MainActivity.this);
         mRecyclerView.setAdapter(mMainAdapter);
-
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -103,13 +110,11 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
     }
 
     private void showProgressView() {
-        //progressBarMain.setVisibility(View.VISIBLE);
         mMainAdapter.setLoading(true);
     }
 
     private void hideProgressView() {
         mMainAdapter.setLoading(false);
-        //progressBarMain.setVisibility(View.GONE);
     }
 
     @Override

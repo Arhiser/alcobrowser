@@ -9,6 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:padding="52dp"/>
+        android:padding="42dp"/>
 
 </LinearLayout>

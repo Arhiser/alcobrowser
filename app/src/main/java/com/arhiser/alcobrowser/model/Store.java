@@ -1,13 +1,17 @@
 package com.arhiser.alcobrowser.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity
 public class Store implements Parcelable{
 
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -772,5 +776,52 @@ public class Store implements Parcelable{
             dest.writeByte((byte) 1);
             dest.writeInt(storeNo);
         }
+    }
+
+//    public Store() {
+//    }
+
+    public Store(Integer id, Boolean isDead, String name, String tags, String addressLine1, String addressLine2, String city, String postalCode, String telephone, String fax, Double latitude, Double longitude, Integer productsCount, Integer inventoryCount, Integer inventoryPriceInCents, Integer inventoryVolumeInMilliliters, Boolean hasWheelchairAccessability, Boolean hasBilingualServices, Boolean hasProductConsultant, Boolean hasTastingBar, Boolean hasBeerColdRoom, Boolean hasSpecialOccasionPermits, Boolean hasVintagesCorner, Boolean hasParking, Boolean hasTransitAccess, Integer sundayOpen, Integer sundayClose, Integer mondayOpen, Integer mondayClose, Integer tuesdayOpen, Integer tuesdayClose, Integer wednesdayOpen, Integer wednesdayClose, Integer thursdayOpen, Integer thursdayClose, Integer fridayOpen, Integer fridayClose, Integer saturdayOpen, Integer saturdayClose, String updatedAt, Integer storeNo) {
+        this.id = id;
+        this.isDead = isDead;
+        this.name = name;
+        this.tags = tags;
+        this.addressLine1 = addressLine1;
+        this.addressLine2 = addressLine2;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.telephone = telephone;
+        this.fax = fax;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.productsCount = productsCount;
+        this.inventoryCount = inventoryCount;
+        this.inventoryPriceInCents = inventoryPriceInCents;
+        this.inventoryVolumeInMilliliters = inventoryVolumeInMilliliters;
+        this.hasWheelchairAccessability = hasWheelchairAccessability;
+        this.hasBilingualServices = hasBilingualServices;
+        this.hasProductConsultant = hasProductConsultant;
+        this.hasTastingBar = hasTastingBar;
+        this.hasBeerColdRoom = hasBeerColdRoom;
+        this.hasSpecialOccasionPermits = hasSpecialOccasionPermits;
+        this.hasVintagesCorner = hasVintagesCorner;
+        this.hasParking = hasParking;
+        this.hasTransitAccess = hasTransitAccess;
+        this.sundayOpen = sundayOpen;
+        this.sundayClose = sundayClose;
+        this.mondayOpen = mondayOpen;
+        this.mondayClose = mondayClose;
+        this.tuesdayOpen = tuesdayOpen;
+        this.tuesdayClose = tuesdayClose;
+        this.wednesdayOpen = wednesdayOpen;
+        this.wednesdayClose = wednesdayClose;
+        this.thursdayOpen = thursdayOpen;
+        this.thursdayClose = thursdayClose;
+        this.fridayOpen = fridayOpen;
+        this.fridayClose = fridayClose;
+        this.saturdayOpen = saturdayOpen;
+        this.saturdayClose = saturdayClose;
+        this.updatedAt = updatedAt;
+        this.storeNo = storeNo;
     }
 }
