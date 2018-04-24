@@ -1,5 +1,8 @@
 package com.arhiser.alcobrowser.ui;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +25,13 @@ import com.arhiser.alcobrowser.network.Request;
 
 import java.util.List;
 
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements AAH_FabulousFragment.Callbacks, IMainView {
 
@@ -92,17 +100,23 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
     private void loadMore(int pageNum) {
         isLoadingInProgress = true;
         showProgressView();
-        storesRequest = Request.getStores(pageNum, 20).subscribe(
-                storeRequestResult -> {
-                    mMainAdapter.addAll(storeRequestResult.getResult());
-                    isLoadingInProgress = false;
-                    hideProgressView();
-                    pager = storeRequestResult.getPager();
-                }, error -> {
-                    isLoadingInProgress = false;
-                    showProgressView();
-                    //handle errors
-                });
+
+        if (!isNetworkAvailable()) {
+            offlineMode();
+        } else {
+            storesRequest = Request.getStores(pageNum, 20).subscribe(
+                    storeRequestResult -> {
+                        mMainAdapter.addAll(storeRequestResult.getResult());
+                        isLoadingInProgress = false;
+                        hideProgressView();
+                        pager = storeRequestResult.getPager();
+                    }, error -> {
+                        isLoadingInProgress = false;
+                        showProgressView();
+                        //handle errors
+                    });
+
+        }
     }
 
     private boolean isAllLoaded() {
@@ -132,5 +146,32 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
     public void OnItemClick(int position, List<Store> storeList) {
         Toast.makeText(MainActivity.this, "Clicked :D", Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void offlineMode() {
+        database.storesDao().getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<List<Store>>() {
+                    @Override
+                    public void onSuccess(List<Store> list) {
+                        mMainAdapter.addAll(list);
+                        isLoadingInProgress = false;
+                        hideProgressView();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        isLoadingInProgress = false;
+                        showProgressView();
+                    }
+                });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
     }
 }

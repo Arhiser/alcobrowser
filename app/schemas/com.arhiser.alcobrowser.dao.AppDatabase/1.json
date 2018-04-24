@@ -1,0 +1,273 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "caea6828c07457fa0d01a5aa35ffd3b4",
+    "entities": [
+      {
+        "tableName": "Store",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `isDead` INTEGER, `name` TEXT, `tags` TEXT, `addressLine1` TEXT, `addressLine2` TEXT, `city` TEXT, `postalCode` TEXT, `telephone` TEXT, `fax` TEXT, `latitude` REAL, `longitude` REAL, `productsCount` INTEGER, `inventoryCount` INTEGER, `inventoryPriceInCents` INTEGER, `inventoryVolumeInMilliliters` INTEGER, `hasWheelchairAccessability` INTEGER, `hasBilingualServices` INTEGER, `hasProductConsultant` INTEGER, `hasTastingBar` INTEGER, `hasBeerColdRoom` INTEGER, `hasSpecialOccasionPermits` INTEGER, `hasVintagesCorner` INTEGER, `hasParking` INTEGER, `hasTransitAccess` INTEGER, `sundayOpen` INTEGER, `sundayClose` INTEGER, `mondayOpen` INTEGER, `mondayClose` INTEGER, `tuesdayOpen` INTEGER, `tuesdayClose` INTEGER, `wednesdayOpen` INTEGER, `wednesdayClose` INTEGER, `thursdayOpen` INTEGER, `thursdayClose` INTEGER, `fridayOpen` INTEGER, `fridayClose` INTEGER, `saturdayOpen` INTEGER, `saturdayClose` INTEGER, `updatedAt` TEXT, `storeNo` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "isDead",
+            "columnName": "isDead",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tags",
+            "columnName": "tags",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "addressLine1",
+            "columnName": "addressLine1",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "addressLine2",
+            "columnName": "addressLine2",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "city",
+            "columnName": "city",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "postalCode",
+            "columnName": "postalCode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "telephone",
+            "columnName": "telephone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fax",
+            "columnName": "fax",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "productsCount",
+            "columnName": "productsCount",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "inventoryCount",
+            "columnName": "inventoryCount",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "inventoryPriceInCents",
+            "columnName": "inventoryPriceInCents",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "inventoryVolumeInMilliliters",
+            "columnName": "inventoryVolumeInMilliliters",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasWheelchairAccessability",
+            "columnName": "hasWheelchairAccessability",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasBilingualServices",
+            "columnName": "hasBilingualServices",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasProductConsultant",
+            "columnName": "hasProductConsultant",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasTastingBar",
+            "columnName": "hasTastingBar",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasBeerColdRoom",
+            "columnName": "hasBeerColdRoom",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasSpecialOccasionPermits",
+            "columnName": "hasSpecialOccasionPermits",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasVintagesCorner",
+            "columnName": "hasVintagesCorner",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasParking",
+            "columnName": "hasParking",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hasTransitAccess",
+            "columnName": "hasTransitAccess",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sundayOpen",
+            "columnName": "sundayOpen",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sundayClose",
+            "columnName": "sundayClose",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mondayOpen",
+            "columnName": "mondayOpen",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mondayClose",
+            "columnName": "mondayClose",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tuesdayOpen",
+            "columnName": "tuesdayOpen",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tuesdayClose",
+            "columnName": "tuesdayClose",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "wednesdayOpen",
+            "columnName": "wednesdayOpen",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "wednesdayClose",
+            "columnName": "wednesdayClose",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "thursdayOpen",
+            "columnName": "thursdayOpen",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "thursdayClose",
+            "columnName": "thursdayClose",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fridayOpen",
+            "columnName": "fridayOpen",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fridayClose",
+            "columnName": "fridayClose",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "saturdayOpen",
+            "columnName": "saturdayOpen",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "saturdayClose",
+            "columnName": "saturdayClose",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updatedAt",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "storeNo",
+            "columnName": "storeNo",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"caea6828c07457fa0d01a5aa35ffd3b4\")"
+    ]
+  }
+}

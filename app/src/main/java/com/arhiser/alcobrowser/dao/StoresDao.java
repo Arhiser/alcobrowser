@@ -12,12 +12,13 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 @Dao
 public interface StoresDao {
 
     @Query("SELECT * FROM store")
-    List<Store> getAll();
+    Single<List<Store>> getAll();
 
     @Query("SELECT * FROM store WHERE id = :id")
     Store getById(int id);
