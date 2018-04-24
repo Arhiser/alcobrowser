@@ -26,6 +26,9 @@ import com.arhiser.alcobrowser.network.Request;
 import java.util.List;
 
 import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
@@ -83,40 +86,49 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
 
                 if (!isLoadingInProgress
                         && !isAllLoaded()
-                        && (totalItemCount - visibleItemCount) <= (firstVisibleItem + 2)) {
+                        && (totalItemCount - visibleItemCount) <= (firstVisibleItem + 2)
+                        && isNetworkAvailable()) {
                     loadMore(pager != null ? pager.getCurrentPage() + 1 : 1);
                 }
             }
         });
 
-        startLoad();
+        if (isNetworkAvailable()) {
+            startLoad();
+        } else {
+            offlineMode();
+        }
     }
 
     private void startLoad() {
         pager = null;
+        clearStoreTable();
         loadMore(1);
+    }
+
+    private void clearStoreTable() {
+        Single.create(e -> {
+            database.storesDao().clearTable();
+            e.onSuccess(new Object());
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
     private void loadMore(int pageNum) {
         isLoadingInProgress = true;
         showProgressView();
-
-        if (!isNetworkAvailable()) {
-            offlineMode();
-        } else {
-            storesRequest = Request.getStores(pageNum, 20).subscribe(
-                    storeRequestResult -> {
-                        mMainAdapter.addAll(storeRequestResult.getResult());
-                        isLoadingInProgress = false;
-                        hideProgressView();
-                        pager = storeRequestResult.getPager();
-                    }, error -> {
-                        isLoadingInProgress = false;
-                        showProgressView();
-                        //handle errors
-                    });
-
-        }
+        storesRequest = Request.getStores(pageNum, 20).subscribe(
+                storeRequestResult -> {
+                    mMainAdapter.addAll(storeRequestResult.getResult());
+                    isLoadingInProgress = false;
+                    hideProgressView();
+                    pager = storeRequestResult.getPager();
+                }, error -> {
+                    isLoadingInProgress = false;
+                    showProgressView();
+                    //handle errors
+                });
     }
 
     private boolean isAllLoaded() {

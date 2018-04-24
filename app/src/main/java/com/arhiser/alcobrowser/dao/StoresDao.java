@@ -13,6 +13,7 @@ import java.util.List;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
 
 @Dao
 public interface StoresDao {
@@ -25,6 +26,12 @@ public interface StoresDao {
 
     @Insert
     void insert (Store... store);
+
+    @Insert
+    void insert (List<Store> store);
+
+    @Query("DELETE FROM store")
+    public void clearTable();
 
     @Update
     void update (Store store);
