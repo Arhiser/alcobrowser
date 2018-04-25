@@ -1,6 +1,8 @@
 package com.arhiser.alcobrowser.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import com.arhiser.alcobrowser.dao.StoresDao;
 import com.arhiser.alcobrowser.model.Pager;
 import com.arhiser.alcobrowser.model.Store;
 import com.arhiser.alcobrowser.network.Request;
+import com.arhiser.alcobrowser.network.receiver.NetworkChangeReceiver;
 
 import java.util.List;
 
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
 
     private boolean isLoadingInProgress = false;
     private Pager pager;
+
+    private BroadcastReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +98,31 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
             }
         });
 
-        if (isNetworkAvailable()) {
+        mNetworkReceiver = new NetworkChangeReceiver();
+        registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        if (isNetworkAvailable()){
             startLoad();
         } else {
             offlineMode();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        storesRequest.dispose();
+        super.onDestroy();
+        unregisterReceiver(mNetworkReceiver);
+    }
+
+    @Override
+    public void onResult(Object result) {
+        Toast.makeText(MainActivity.this, "Here is your result :P", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void OnItemClick(int position, List<Store> storeList) {
+        Toast.makeText(MainActivity.this, "Clicked :D", Toast.LENGTH_SHORT).show();
     }
 
     private void startLoad() {
@@ -143,23 +168,6 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
         mMainAdapter.setLoading(false);
     }
 
-    @Override
-    protected void onDestroy() {
-        storesRequest.dispose();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onResult(Object result) {
-        Toast.makeText(MainActivity.this, "Here is your result :P", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void OnItemClick(int position, List<Store> storeList) {
-        Toast.makeText(MainActivity.this, "Clicked :D", Toast.LENGTH_SHORT).show();
-
-    }
-
     private void offlineMode() {
         database.storesDao().getAll()
                 .subscribeOn(Schedulers.io())
@@ -181,9 +189,13 @@ public class MainActivity extends AppCompatActivity implements AAH_FabulousFragm
     }
 
     private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null;
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
+            return (activeNetworkInfo != null && activeNetworkInfo.isConnected());
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

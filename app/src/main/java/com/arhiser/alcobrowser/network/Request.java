@@ -1,8 +1,6 @@
 package com.arhiser.alcobrowser.network;
 
 import com.arhiser.alcobrowser.App;
-import com.arhiser.alcobrowser.dao.StoresDao;
-import com.arhiser.alcobrowser.model.Store;
 import com.arhiser.alcobrowser.model.StoreRequestResult;
 import com.arhiser.alcobrowser.network.service.RetrofitService;
 
